@@ -1,5 +1,5 @@
 const KEYWORDS_URL = chrome.runtime.getURL('keywords.txt')
-const CONTAINER = document.querySelector('.block-news')
+const CONTAINER = document.querySelector('.block-news') || document
 
 const findAnnoyingPosts = (post, keywords) => {
     let title = post.querySelector('h1').textContent

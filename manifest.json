@@ -7,7 +7,7 @@
         "default_title": "Klix Election Remover"
     },
     "content_scripts": [
-        { "matches": ["https://www.klix.ba/*"], "js": ["src/main.js"] }
+        { "matches": ["https://www.klix.ba/"], "js": ["src/main.js"] }
     ],
     "web_accessible_resources": ["keywords.txt"],
     "manifest_version": 2
