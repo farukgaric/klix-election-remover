@@ -1,7 +1,7 @@
 {
     "name": "Klix Election Remover",
     "version": "1.0",
-    "description": "Hides posts about annoying political parties and individuals on Klix.ba",
+    "description": "Removes posts about annoying political parties and individuals on Klix.ba",
     "permissions": ["activeTab"],
     "browser_action": {
         "default_title": "Klix Election Remover"
