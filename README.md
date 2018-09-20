@@ -1,5 +1,5 @@
 # Klix Election Remover (WIP)
-()Google Chrome extenstion that removes posts about annoying political parties and individuals on Klix.ba
+Google Chrome extenstion that removes posts about annoying political parties and individuals on Klix.ba
 
 # Steps to install
 1. Download ZIP and then extract It, or clone repo using Git
