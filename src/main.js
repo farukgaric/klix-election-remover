@@ -1,33 +1,23 @@
 const KEYWORDS_URL = chrome.runtime.getURL('keywords.txt')
 const CONTAINER = document.querySelector('.block-news') || document
 
-const findKeywords = (post, lookupText, keywords) => {
+const MAIN_POSTS = document.querySelectorAll('.kolona')
+const TAGS = document.querySelectorAll('.tagovi a')
+const SIDEBAR_POSTS = document.querySelectorAll('.articleList a')
+const FEATURED_POSTS = document.querySelectorAll('.izdvojeneList .col-md-12')
+
+const findKeywords = (post, keywords, lookupText) => {
     return keywords.some(keyword => {
         let regex = new RegExp(keyword, 'gi')
         return lookupText.match(regex)
     })
 }
 
-const removePosts = keywords => {
-    let posts = [...document.querySelectorAll('.kolona')]
-    keywords = keywords.split('\n')
-
-    posts.forEach(post => {
-        let found = findKeywords(post, post.querySelector('h1').textContent, keywords)
+const performRemoveAction = (elements, keywords, node) => {
+    elements.forEach(element => {
+        let found = findKeywords(element, keywords, node ? element.querySelector(node).textContent : element.textContent)
         if (found) {
-            post.style.display = 'none'
-        }
-    })
-}
-
-const removeTags = keywords => {
-    let tags = [...document.querySelectorAll('.tagovi a')]
-    keywords = keywords.split('\n')
-
-    tags.forEach(tag => {
-        let found = findKeywords(tag, tag.textContent, keywords)
-        if (found) {
-            tag.style.display = 'none'
+            element.style.display = 'none'
         }
     })
 }
@@ -37,13 +27,17 @@ chrome.runtime.sendMessage({}, response => {
         .then(blob => blob.text())
         .then(response => {
 
-            // Initially remove all annoying posts
-            removePosts(response)
-            removeTags(response)
+            let keywords = response.split('\n')
 
-            // In case change in DOM happend perform remove action again
+            performRemoveAction(MAIN_POSTS, keywords, 'h1')
+            performRemoveAction(TAGS, keywords)
+            performRemoveAction(SIDEBAR_POSTS, keywords, '.title')
+            performRemoveAction(FEATURED_POSTS, keywords, '.naslov')
+
+            // In case change in DOM happend, perform remove action again
             let observer = new MutationObserver(mutations => {
-                removePosts(response)
+                let latestMainPosts = document.querySelectorAll('.kolona')
+                performRemoveAction(latestMainPosts, keywords, 'h1')
             })
             observer.observe(CONTAINER, { childList: true })
 
